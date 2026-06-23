@@ -15,6 +15,7 @@ public class Elevator implements  ElevatorOperations{
     TreeSet<Integer> upRequests;
     TreeSet<Integer> downRequests;
     DoorState doorState;
+    int users;
     public ElevatorState elevatorState;
 
     public Elevator(int id){
@@ -25,6 +26,7 @@ public class Elevator implements  ElevatorOperations{
         downRequests = new TreeSet<>();
         doorState = DoorState.CLOSE;
         elevatorState = ElevatorState.IDLE;
+        users = 0;
     }
 
     public void addQueue(int floor){
@@ -44,9 +46,6 @@ public class Elevator implements  ElevatorOperations{
             else upRequests.add(floor);
         }
 
-        System.out.println("UPREQ SIZE "+upRequests.size());
-        System.out.println("DOWNREQ SIZE "+downRequests.size());
-
     }
 
     public void addStop(int floor){
@@ -56,6 +55,7 @@ public class Elevator implements  ElevatorOperations{
             elevatorState = ElevatorState.BUSY;
             System.out.println("Elevator busy");
         }
+
     }
 
     public Integer getNextStop(){
@@ -79,7 +79,6 @@ public class Elevator implements  ElevatorOperations{
     }
 
     void changeDirection(){
-        System.out.println("CHANGE DIRECTION "+direction+" UPREQ "+upRequests.size()+ " DOWN REQ "+downRequests.size());
 
         if(direction.equals(Direction.UP) && upRequests.isEmpty() && !downRequests.isEmpty()){
             direction = Direction.DOWN;
@@ -99,17 +98,17 @@ public class Elevator implements  ElevatorOperations{
         }
         else downRequests.remove(currentFloor);
 
-        changeDirection();
-
         if(upRequests.isEmpty() && downRequests.isEmpty()){
             elevatorState = ElevatorState.IDLE;
+            return ;
         }
+        changeDirection();
+
     }
 
     void tick(){
 
         Integer nextStop = getNextStop();
-        System.out.println("NEXT - STOP " +nextStop);
 
         if(nextStop == null){
             elevatorState = ElevatorState.IDLE;
@@ -118,14 +117,16 @@ public class Elevator implements  ElevatorOperations{
         }
         if(currentFloor < nextStop){
             currentFloor++;
+            System.out.println("CURRENT FLOOR "+currentFloor+" Elevator moving  "+direction.name()+" Elevator ID : "+id);
+
         }
         else if(currentFloor > nextStop){
             currentFloor--;
+            System.out.println("CURRENT FLOOR "+currentFloor+" Elevator moving  "+direction.name()+" Elevator ID : "+id);
         }
         else{
             processCurrentFloor();
         }
-        System.out.println("CURRENT FLOOR "+currentFloor+" Elevator moving  "+direction.name());
     }
 
 

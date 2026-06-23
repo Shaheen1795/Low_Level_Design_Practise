@@ -1,29 +1,47 @@
 package main;
 
+import main.elevatorsystem.Direction;
 import main.elevatorsystem.Elevator;
-import main.parklinglot.*;
-import main.tictactoe.Game;
-import main.tictactoe.Player;
+import main.elevatorsystem.ElevatorSystem;
+import main.elevatorsystem.request.DropOffRequest;
+import main.elevatorsystem.request.PickUpRequest;
+import main.elevatorsystem.scheduling.DirectionAwareStrategy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Solution {
 
     public static void main(String[] str){
 
-        Elevator elevator = new Elevator(0);
+        ElevatorSystem system =
+                new ElevatorSystem(
+                        new DirectionAwareStrategy()
+                );
 
-        elevator.addStop(5);
-        elevator.addStop(7);
-        elevator.addStop(2);
 
-        elevator.start();
+        Elevator e1 = new Elevator(1);
+        Elevator e2 = new Elevator(2);
 
-        elevator.addStop(1);
 
-        elevator.start();
+        system.addElevator(e1);
+        system.addElevator(e2);
+
+
+        // External request
+        system.assignPickUpRequest(
+                new PickUpRequest(
+                        7,
+                        Direction.DOWN
+                )
+        );
+
+
+        // simulate passenger entering e1
+        system.assignDropOffRequest(e1,
+                new DropOffRequest(0)
+        );
+
+
+        e1.start();
 
     }
 }
