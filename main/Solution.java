@@ -18,8 +18,8 @@ public class Solution {
                 );
 
 
-        Elevator e1 = new Elevator(1);
-        Elevator e2 = new Elevator(2);
+        Elevator e1 = new Elevator(1, 15);
+        Elevator e2 = new Elevator(2, 16);
 
 
         system.addElevator(e1);
@@ -30,7 +30,7 @@ public class Solution {
         system.assignPickUpRequest(
                 new PickUpRequest(
                         7,
-                        Direction.DOWN
+                        Direction.DOWN, 1
                 )
         );
 

@@ -15,10 +15,11 @@ public class Elevator implements  ElevatorOperations{
     TreeSet<Integer> upRequests;
     TreeSet<Integer> downRequests;
     DoorState doorState;
-    int users;
+    public int currentLoad;
     public ElevatorState elevatorState;
+    public int capacity ;
 
-    public Elevator(int id){
+    public Elevator(int id, int capacity){
         this.id = id;
         currentFloor = 0 ;
         direction = Direction.UP;
@@ -26,7 +27,12 @@ public class Elevator implements  ElevatorOperations{
         downRequests = new TreeSet<>();
         doorState = DoorState.CLOSE;
         elevatorState = ElevatorState.IDLE;
-        users = 0;
+        currentLoad = 0;
+        this.capacity = capacity;
+    }
+
+    public  boolean isFull(){
+        return currentLoad == capacity;
     }
 
     public void addQueue(int floor){
@@ -127,6 +133,16 @@ public class Elevator implements  ElevatorOperations{
         else{
             processCurrentFloor();
         }
+    }
+
+    public int getMaxUpFloor(){
+        if(upRequests.isEmpty()) return -1 ;
+        return upRequests.getLast();
+    }
+
+    public int getMinFloor(){
+        if(downRequests.isEmpty()) return -1 ;
+        return downRequests.getFirst();
     }
 
 
